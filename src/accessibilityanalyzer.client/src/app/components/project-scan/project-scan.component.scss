@@ -1,0 +1,13 @@
+:host { display: block; }
+textarea[readonly] { min-height: 22rem; resize: vertical; }
+.project-tree { max-height: 40rem; overflow: auto; background: #fff; font-size: .875rem; }
+.tree-children { padding-left: 1rem; border-left: 1px dotted #adb5bd; margin-left: .45rem; }
+.tree-item { display: flex; align-items: center; gap: .35rem; width: 100%; padding: .15rem .35rem; border: 0; border-radius: .25rem; background: transparent; color: inherit; text-align: left; }
+.tree-item:hover { background: #eef2f7; }
+.tree-name { overflow-wrap: anywhere; }
+.tree-folder .tree-name { font-weight: 600; }
+.tree-caret { width: .8rem; flex: none; }
+.tree-file { padding-left: 1.5rem; }
+.tree-selected { background: #dbe7ff; box-shadow: inset 3px 0 0 #0d6efd; }
+.tree-item .badge { flex: none; font-weight: 500; }
+.skip-folder-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: .15rem 1rem; }

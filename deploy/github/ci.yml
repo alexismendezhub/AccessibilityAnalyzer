@@ -1,0 +1,38 @@
+# GitHub Actions CI template. Copy it to .github/workflows/ci.yml in your repository.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  server:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: .NET tests
+        run: dotnet test AccessibilityAnalyzer.slnx -c Release
+
+  client:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/accessibilityanalyzer.client
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install
+      - run: npm audit --audit-level=low
+      - name: Client tests
+        run: npm test
+      - name: Production build
+        run: npm run build

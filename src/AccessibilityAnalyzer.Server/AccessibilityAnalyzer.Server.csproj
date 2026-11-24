@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>8026edc1-5748-49bb-b5f5-d2022238d0fb</UserSecretsId>
+    <SpaRoot>..\accessibilityanalyzer.client</SpaRoot>
+    <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+    <SpaProxyServerUrl>https://localhost:49230</SpaProxyServerUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="10.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AccessibilityAnalyzer.Application\AccessibilityAnalyzer.Application.csproj" />
+    <ProjectReference Include="..\accessibilityanalyzer.client\accessibilityanalyzer.client.esproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\AccessibilityAnalyzer.Domain\AccessibilityAnalyzer.Domain.csproj" />
+    <ProjectReference Include="..\AccessibilityAnalyzer.Infrastructure\AccessibilityAnalyzer.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

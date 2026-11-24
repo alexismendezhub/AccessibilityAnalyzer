@@ -1,0 +1,23 @@
+<section aria-labelledby="findings-heading">
+  <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-3">
+    <div>
+      <h2 id="findings-heading" class="h4 mb-1">Warnings / validation required</h2>
+      <p class="text-body-secondary mb-0">Safe corrections are already reflected in the corrected source. Each warning identifies the exact source line or all repeated lines that still require validation.</p>
+    </div>
+    <div><label class="form-label" for="finding-filter">Filter warnings</label><input id="finding-filter" class="form-control" type="search" [value]="filter()" (input)="updateFilter($event)"></div>
+  </div>
+  @if (visibleFindings().length === 0) { <p class="alert alert-success">No remaining source warnings were detected after automatic corrections.</p> }
+  @else {
+    <div class="table-responsive"><table class="table table-striped align-middle"><caption class="visually-hidden">Accessibility warnings with source lines</caption><thead><tr><th scope="col">Rule</th><th scope="col">Warning</th><th scope="col">Source line(s)</th><th scope="col">Evidence</th><th scope="col">What to validate</th></tr></thead><tbody>
+      @for (item of visibleFindings(); track item.ruleId + ':' + item.location.sourceName + ':' + item.location.line + ':' + item.groupKey) {
+        <tr>
+          <td><code>{{ item.ruleId }}</code><div class="small">WCAG {{ item.wcagCriterion }} {{ item.wcagLevel }}</div><div class="small">{{ item.occurrences }} occurrence(s)</div></td>
+          <td><strong>{{ item.message }}</strong><div class="small mt-1">{{ item.status }} / {{ item.severity }}</div></td>
+          <td><strong>{{ lineText(item) }}</strong><div class="small">{{ item.location.sourceName }}</div>@if (locations(item).length > 1) {<details class="mt-1"><summary>All positions</summary><ul class="small mb-0 ps-3">@for(location of locations(item); track location.sourceName + ':' + location.line + ':' + location.column){<li>Line {{location.line}}, column {{location.column}}</li>}</ul></details>}</td>
+          <td><pre class="mb-0">{{ item.evidence }}</pre></td>
+          <td>{{ item.recommendation }}</td>
+        </tr>
+      }
+    </tbody></table></div>
+  }
+</section>

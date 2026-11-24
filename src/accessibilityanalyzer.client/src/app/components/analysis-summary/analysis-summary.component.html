@@ -1,0 +1,9 @@
+<section aria-labelledby="summary-heading" class="mb-4">
+  <h2 id="summary-heading" class="h4">Summary</h2>
+  <div class="row g-3">
+    <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body"><strong class="d-block fs-3">{{ report().errors }}</strong><span>Errors</span></div></div></div>
+    <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body"><strong class="d-block fs-3">{{ report().potentialIssues }}</strong><span>Potential issues</span></div></div></div>
+    <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body"><strong class="d-block fs-3">{{ report().manualReviews }}</strong><span>Manual reviews</span></div></div></div>
+    <div class="col-6 col-lg-3"><div class="card h-100"><div class="card-body"><strong class="d-block fs-3">{{ report().dynamicCount }}</strong><span>Dynamic signals</span></div></div></div>
+  </div>
+</section>

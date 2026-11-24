@@ -1,0 +1,75 @@
+/* Teal and navy theme, applied over Bootstrap 5.3.
+   Text colors keep at least 4.5:1 contrast; focus rings at least 3:1. */
+:root {
+  --brand-navy: #0b1b33;
+  --brand-ink: #0f1f38;
+  --brand-body: #3d4a5c;
+  --brand-muted: #5f6c7d;
+  --brand-line: #e2e8ee;
+  --brand-line-strong: #cfd8e1;
+  --brand-surface: #f6f8fa;
+  --brand-teal: #0f7f88;
+  --brand-teal-dark: #0b666d;
+  --brand-teal-darker: #08525a;
+  --brand-teal-tint: #e3f2f3;
+  --brand-turquoise: #35c4cb;
+
+  --bs-font-sans-serif: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --bs-body-color: var(--brand-body);
+  --bs-body-bg: var(--brand-surface);
+  --bs-emphasis-color: var(--brand-ink);
+  --bs-heading-color: var(--brand-ink);
+  --bs-secondary-color: var(--brand-muted);
+  --bs-border-color: var(--brand-line-strong);
+  --bs-primary: var(--brand-teal);
+  --bs-primary-rgb: 15, 127, 136;
+  --bs-primary-text-emphasis: var(--brand-teal-darker);
+  --bs-primary-bg-subtle: var(--brand-teal-tint);
+  --bs-primary-border-subtle: #a9d6d9;
+  --bs-link-color: var(--brand-teal-dark);
+  --bs-link-color-rgb: 11, 102, 109;
+  --bs-link-hover-color: var(--brand-teal-darker);
+  --bs-link-hover-color-rgb: 8, 82, 90;
+  --bs-focus-ring-color: rgba(11, 102, 109, .35);
+  --bs-border-radius: 6px;
+  --bs-border-radius-lg: 10px;
+}
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { min-height: 100vh; background: var(--brand-surface); color: var(--brand-body); }
+h1, h2, h3, h4, h5, h6 { color: var(--brand-ink); }
+:focus-visible { outline: 3px solid var(--brand-teal-dark); outline-offset: 3px; }
+.app-header :focus-visible { outline-color: var(--brand-turquoise); }
+
+.card { border-color: var(--brand-line); box-shadow: 0 1px 2px rgba(11, 27, 51, .04), 0 8px 24px rgba(11, 27, 51, .05) !important; }
+
+.btn-primary {
+  --bs-btn-bg: var(--brand-teal); --bs-btn-border-color: var(--brand-teal);
+  --bs-btn-hover-bg: var(--brand-teal-dark); --bs-btn-hover-border-color: var(--brand-teal-dark);
+  --bs-btn-active-bg: var(--brand-teal-darker); --bs-btn-active-border-color: var(--brand-teal-darker);
+  --bs-btn-disabled-bg: var(--brand-teal); --bs-btn-disabled-border-color: var(--brand-teal);
+  --bs-btn-focus-shadow-rgb: 15, 127, 136;
+}
+.btn-outline-primary {
+  --bs-btn-color: var(--brand-teal-dark); --bs-btn-border-color: var(--brand-teal);
+  --bs-btn-hover-bg: var(--brand-teal); --bs-btn-hover-border-color: var(--brand-teal); --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: var(--brand-teal-dark); --bs-btn-active-border-color: var(--brand-teal-dark); --bs-btn-active-color: #fff;
+  --bs-btn-disabled-color: var(--brand-teal-dark); --bs-btn-disabled-border-color: var(--brand-teal);
+  --bs-btn-focus-shadow-rgb: 15, 127, 136;
+}
+.btn-outline-secondary {
+  --bs-btn-color: var(--brand-body); --bs-btn-border-color: var(--brand-line-strong);
+  --bs-btn-hover-bg: var(--brand-navy); --bs-btn-hover-border-color: var(--brand-navy); --bs-btn-hover-color: #fff;
+  --bs-btn-active-bg: var(--brand-navy); --bs-btn-active-border-color: var(--brand-navy); --bs-btn-active-color: #fff;
+}
+.nav-pills { --bs-nav-pills-link-active-bg: var(--brand-teal); --bs-nav-pills-link-active-color: #fff; --bs-nav-link-color: var(--brand-teal-dark); --bs-nav-link-hover-color: var(--brand-teal-darker); }
+.form-control:focus, .form-select:focus, .form-check-input:focus { border-color: var(--brand-teal); box-shadow: 0 0 0 .25rem rgba(15, 127, 136, .25); }
+.form-check-input:checked { background-color: var(--brand-teal); border-color: var(--brand-teal); }
+.text-bg-info { color: var(--brand-ink) !important; background-color: var(--brand-teal-tint) !important; }
+.table { --bs-table-color: var(--brand-body); }
+.table > thead th { color: var(--brand-ink); }
+
+.skip-link { position: absolute; left: .5rem; top: -5rem; z-index: 2000; padding: .75rem 1rem; background: #fff; color: var(--brand-ink); border: 2px solid var(--brand-navy); }
+.skip-link:focus { top: .5rem; }
+.visually-hidden-focusable:not(:focus):not(:focus-within) { position: absolute!important; width: 1px!important; height: 1px!important; padding: 0!important; margin: -1px!important; overflow: hidden!important; clip: rect(0,0,0,0)!important; white-space: nowrap!important; border: 0!important; }

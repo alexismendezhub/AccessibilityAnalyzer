@@ -1,0 +1,8 @@
+:host { display:block; }
+.app-header { background: var(--brand-navy); color: #c6d2e0; border-bottom: 4px solid var(--brand-teal); }
+.app-header h1 { color: #fff; letter-spacing: -0.02em; }
+.nav-link { border: 1px solid transparent; font-weight: 500; }
+.nav-link:not(.active) { border-color: var(--brand-line-strong); color: var(--brand-teal-dark); background: #fff; }
+.nav-link:not(.active):hover { background: var(--brand-teal-tint); }
+.app-footer { color: var(--brand-muted); }
+main:focus { outline: none; }

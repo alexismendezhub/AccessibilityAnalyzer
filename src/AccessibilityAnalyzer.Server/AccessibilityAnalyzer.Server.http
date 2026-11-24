@@ -1,0 +1,14 @@
+@AccessibilityAnalyzer.Server_HostAddress = https://localhost:7037
+
+GET {{AccessibilityAnalyzer.Server_HostAddress}}/health
+Accept: application/json
+
+###
+
+POST {{AccessibilityAnalyzer.Server_HostAddress}}/api/analyze-html
+Content-Type: application/json
+
+{
+  "html": "<button></button>",
+  "sourceName": "sample.html"
+}

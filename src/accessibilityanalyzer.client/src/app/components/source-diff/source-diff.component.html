@@ -1,0 +1,33 @@
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+  <p class="small mb-0">{{ summary() }} Changed text is marked <del class="diff-legend">removed</del> before and <ins class="diff-legend">added</ins> after.</p>
+  <button class="btn btn-sm btn-outline-secondary" type="button" (click)="toggleWholeFile()" [attr.aria-pressed]="showWholeFile()">{{ showWholeFile() ? 'Show changed lines only' : 'Show whole file' }}</button>
+</div>
+<div class="diff-scroll border rounded" tabindex="0" [attr.aria-label]="'Before and after for ' + label()">
+  <table class="diff-table">
+    <caption class="visually-hidden">Before and after for {{ label() }}</caption>
+    <thead>
+      <tr>
+        <th scope="col" class="diff-num"><span class="visually-hidden">Line before</span></th>
+        <th scope="col">Before</th>
+        <th scope="col" class="diff-num"><span class="visually-hidden">Line after</span></th>
+        <th scope="col">After</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (block of blocks(); track block.key) {
+        @if (block.kind === 'gap') {
+          <tr class="diff-gap"><td colspan="4">{{ block.hidden }} unchanged line(s) hidden</td></tr>
+        } @else {
+          @for (row of block.rows; track $index) {
+            <tr [class]="'diff-' + row.kind">
+              <td class="diff-num">{{ row.before?.line }}</td>
+              <td class="diff-code">@if (row.before; as cell) {@if (row.kind !== 'equal') {<span class="visually-hidden">Before: </span>}@for (segment of cell.segments; track $index) {@if (segment.changed) {<del>{{ segment.text }}</del>} @else {<span>{{ segment.text }}</span>}}}</td>
+              <td class="diff-num">{{ row.after?.line }}</td>
+              <td class="diff-code">@if (row.after; as cell) {@if (row.kind !== 'equal') {<span class="visually-hidden">After: </span>}@for (segment of cell.segments; track $index) {@if (segment.changed) {<ins>{{ segment.text }}</ins>} @else {<span>{{ segment.text }}</span>}}}</td>
+            </tr>
+          }
+        }
+      }
+    </tbody>
+  </table>
+</div>

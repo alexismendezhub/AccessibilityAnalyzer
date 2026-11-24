@@ -1,0 +1,162 @@
+<section aria-labelledby="project-heading">
+  <h2 id="project-heading" class="h3">Project / files</h2>
+  <p>Load any kind of project: a folder, individual files, or a ZIP. Every HTML component (<code>.html</code>, <code>.cshtml</code>, <code>.razor</code>, <code>.aspx</code>, <code>.vue</code>, <code>.svelte</code>…) is checked against Section 508 and corrected where that can be done safely. In <code>.ts</code>, <code>.js</code>, <code>.jsx</code> and <code>.tsx</code> files only the markup is corrected (Angular/Vue <code>template:</code> strings and React JSX); the code around it is never changed. C#, Markdown and every other file are never modified; warnings found in them are reported for the developer. Everything stays in your browser except the text sent for analysis.</p>
+
+  <fieldset class="skip-folders border rounded p-3 mb-4" aria-describedby="skip-folders-help">
+    <legend class="h6 float-none w-auto px-1 mb-1">Folders to skip</legend>
+    <p id="skip-folders-help" class="form-text mt-0 mb-2">Files inside these folders are not loaded: they are not analyzed, not shown in the project structure and not included in the downloads. Changes apply to the next load.</p>
+    <div class="skip-folder-list">
+      @for (folder of skippableFolders; track folder.name) {
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" [id]="'skip-' + folder.name" [checked]="isSkipped(folder.name)" (change)="toggleSkipped(folder.name, $event)" [disabled]="busy()">
+          <label class="form-check-label" [for]="'skip-' + folder.name"><code>{{ folder.name }}</code> <span class="ms-1 text-body-secondary small">{{ folder.description }}</span></label>
+        </div>
+      }
+    </div>
+    <div class="row g-2 align-items-end mt-2">
+      <div class="col-md-8">
+        <label class="form-label small mb-1" for="skip-custom">Other folder names to skip, separated by commas</label>
+        <input class="form-control form-control-sm" id="skip-custom" aria-describedby="skip-custom-help" placeholder="App_Data, logs, temp" [value]="customSkipped()" (change)="customSkippedChanged($event)" [disabled]="busy()" autocomplete="off" type="text">
+        <div id="skip-custom-help" class="form-text">Names only, matched in any level of the project and ignoring case.@if (customSkippedNames().length) { Skipping also: {{ customSkippedNames().join(', ') }}.}</div>
+      </div>
+      <div class="col-md-4 text-md-end">
+        <button class="btn btn-outline-secondary btn-sm" type="button" (click)="resetSkipped()" [disabled]="busy()">Restore defaults</button>
+      </div>
+    </div>
+  </fieldset>
+
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <h3 class="h6 mb-2">Project folder</h3>
+      <input #projectFolderInput id="project-folder" hidden type="file" multiple webkitdirectory (change)="folderSelected($event)" [disabled]="busy()">
+      <button class="btn btn-outline-primary" type="button" (click)="projectFolderInput.click()" [disabled]="busy()" aria-describedby="project-folder-help">Choose project folder</button>
+      <div id="project-folder-help" class="form-text">Opens the folder picker. The browser supplies the files directly; no machine path is typed or sent to the server.</div>
+    </div>
+    <div class="col-lg-4">
+      <h3 class="h6 mb-2">Project ZIP</h3>
+      <input #projectZipInput id="project-zip" hidden type="file" accept=".zip,application/zip,application/x-zip-compressed" (change)="zipSelected($event)" [disabled]="busy()">
+      <button class="btn btn-outline-primary" type="button" (click)="projectZipInput.click()" [disabled]="busy()" aria-describedby="project-zip-help">Choose project ZIP</button>
+      <div id="project-zip-help" class="form-text">The ZIP is opened in the browser and keeps its folder structure.</div>
+    </div>
+    <div class="col-lg-4">
+      <h3 class="h6 mb-2">Individual files</h3>
+      <input #projectFilesInput id="source-files" hidden type="file" multiple (change)="filesSelected($event)" [disabled]="busy()">
+      <button class="btn btn-outline-primary" type="button" (click)="projectFilesInput.click()" [disabled]="busy()" aria-describedby="source-files-help">Choose project files</button>
+      <div id="source-files-help" class="form-text">Pick one or more files of any type.</div>
+    </div>
+  </div>
+
+  @if (error()) { <p class="text-danger mt-3 mb-0" role="alert">{{ error() }}</p> }
+  <p class="mt-3 mb-0" aria-live="polite">{{ status() }}</p>
+  @if (skipSummary()) { <p class="small text-body-secondary mt-1 mb-0">{{ skipSummary() }}</p> }
+
+  @if (loadedFiles().length > 0) {
+    <section class="mt-4 border-top pt-4" aria-labelledby="project-structure-heading">
+      <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-3">
+        <div>
+          <h3 id="project-structure-heading" class="h4 mb-1">Project structure: {{ sourceLabel() }}</h3>
+          <ul class="list-inline small text-body-secondary mb-0">
+            <li class="list-inline-item">{{ counts().total }} file(s)</li>
+            @if (analysisComplete()) {
+              <li class="list-inline-item">{{ counts().htmlComponents }} HTML component(s) checked</li>
+              <li class="list-inline-item"><strong class="text-body">{{ counts().modified }} modified</strong></li>
+              <li class="list-inline-item">{{ counts().warningsOnly }} other file(s) with warnings, not modified</li>
+            }
+          </ul>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <button class="btn btn-primary" type="button" (click)="downloadCompleteProject()" [disabled]="busy()">Download complete project ZIP</button>
+          <button class="btn btn-outline-primary" type="button" (click)="downloadModifiedFiles()" [disabled]="busy() || counts().modified === 0">Download modified files only</button>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-xl-4">
+          <div class="d-flex flex-wrap align-items-center gap-3 mb-2">
+            <div class="form-check mb-0">
+              <input class="form-check-input" type="checkbox" id="only-modified" [checked]="onlyModified()" (change)="toggleOnlyModified($event)" [disabled]="!analysisComplete()">
+              <label class="form-check-label" for="only-modified">Show only modified files</label>
+            </div>
+            <button class="btn btn-sm btn-link p-0" type="button" (click)="expandAll()">Expand all</button>
+            <button class="btn btn-sm btn-link p-0" type="button" (click)="collapseAll()">Collapse all</button>
+          </div>
+
+          <nav class="project-tree border rounded p-2" aria-label="Project structure">
+            <ng-template #treeLevel let-nodes>
+              <ul class="list-unstyled mb-0">
+                @for (node of nodes; track node.path) {
+                  <li>
+                    @if (node.kind === 'folder') {
+                      <button class="tree-item tree-folder" type="button" [attr.aria-expanded]="isExpanded(node.path)" (click)="toggleFolder(node.path)">
+                        <span class="tree-caret" aria-hidden="true">{{ isExpanded(node.path) ? '▾' : '▸' }}</span>
+                        <span class="tree-name">{{ node.name }}/</span>
+                        @if (node.modifiedFiles > 0) { <span class="badge text-bg-warning">{{ node.modifiedFiles }} modified</span> }
+                      </button>
+                      @if (isExpanded(node.path)) {
+                        <div class="tree-children"><ng-container *ngTemplateOutlet="treeLevel; context: { $implicit: node.children }"></ng-container></div>
+                      }
+                    } @else {
+                      <button class="tree-item tree-file" type="button" [class.tree-selected]="node.index === selectedIndex()" [attr.aria-current]="node.index === selectedIndex() ? 'true' : null" (click)="selectFileAt(node.index)">
+                        <span class="tree-name">{{ node.name }}</span>
+                        @switch (node.state) {
+                          @case ('modified') { <span class="badge text-bg-warning">Modified</span> }
+                          @case ('unchanged-html') { <span class="badge text-bg-light border">HTML, no changes</span> }
+                          @case ('warnings-only') { <span class="badge text-bg-info">{{ node.warnings }} warning(s), not modified</span> }
+                        }
+                      </button>
+                    }
+                  </li>
+                } @empty {
+                  <li class="text-body-secondary small p-2">No modified files.</li>
+                }
+              </ul>
+            </ng-template>
+            <ng-container *ngTemplateOutlet="treeLevel; context: { $implicit: tree() }"></ng-container>
+          </nav>
+        </div>
+
+        <div class="col-xl-8">
+          @if (selectedFile(); as current) {
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+              <h4 class="h5 mb-0 text-break">{{ current.path }}</h4>
+              <div class="d-flex gap-2" role="group" aria-label="Modified file navigation">
+                <button class="btn btn-sm btn-outline-secondary" type="button" (click)="selectPreviousModified()" [disabled]="busy() || !canSelectPreviousModified()">Previous modified</button>
+                <button class="btn btn-sm btn-outline-secondary" type="button" (click)="selectNextModified()" [disabled]="busy() || !canSelectNextModified()">Next modified</button>
+              </div>
+            </div>
+            @if (selectedModifiedPosition() > 0) { <p class="small text-body-secondary mb-2">Modified file {{ selectedModifiedPosition() }} of {{ modifiedIndexes().length }}</p> }
+            <p class="small mb-3" aria-live="polite">{{ previewStatus() }}</p>
+
+            @if (current.textPreviewable && previewReady()) {
+              @if (selectedChanged()) {
+                <section aria-labelledby="before-after-heading">
+                  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+                    <h5 id="before-after-heading" class="h6 mb-0">Before and after</h5>
+                    <button class="btn btn-sm btn-outline-primary" type="button" (click)="copySelectedDownloadVersion()" [disabled]="busy()">Copy corrected file</button>
+                  </div>
+                  <aa-source-diff [before]="originalPreview()" [after]="downloadPreview()" [label]="current.path"></aa-source-diff>
+                  @if (selectedAnalysis(); as analysis) {
+                    <h5 class="h6 mt-3">Corrections applied</h5>
+                    <ul class="mb-0">
+                      @for (fix of analysis.appliedFixes; track $index) { <li>{{ fix }}</li> }
+                    </ul>
+                  }
+                </section>
+              } @else {
+                <details class="border rounded p-2">
+                  <summary>View file (unchanged)</summary>
+                  <label for="project-original-source" class="visually-hidden">Content of {{ current.path }}</label>
+                  <textarea id="project-original-source" class="form-control font-monospace mt-2" rows="16" [value]="originalPreview()" readonly spellcheck="false"></textarea>
+                </details>
+              }
+            } @else if (!current.textPreviewable) {
+              <div class="alert alert-info mb-0">Binary or non-text file. It stays in the project and is included unchanged in the complete-project ZIP.</div>
+            } @else {
+              <div class="alert alert-info mb-0">Loading this file…</div>
+            }
+          }
+        </div>
+      </div>
+    </section>
+  }
+</section>

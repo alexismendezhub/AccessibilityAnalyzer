@@ -1,0 +1,11 @@
+@if (findings().length > 0) {
+<section class="mt-4" aria-labelledby="dynamic-warnings-heading">
+  <h2 id="dynamic-warnings-heading" class="h4">Dynamic HTML / generator warnings</h2>
+  <p class="text-body-secondary">These patterns can generate markup at runtime, so the analyzer corrects static markup where possible but still flags the generator lines that require rendered-DOM validation.</p>
+  <div class="table-responsive"><table class="table table-striped align-middle"><caption class="visually-hidden">Dynamic HTML warnings with source lines</caption><thead><tr><th scope="col">Rule</th><th scope="col">Warning</th><th scope="col">Source line(s)</th><th scope="col">Evidence</th><th scope="col">What to validate</th></tr></thead><tbody>
+    @for(item of findings(); track item.ruleId + ':' + item.evidence) {
+      <tr><td><code>{{item.ruleId}}</code><div class="small">{{item.occurrences}} occurrence(s)</div></td><td>{{item.message}}</td><td><strong>{{lineText(item)}}</strong>@if(locations(item).length>1){<details><summary>All positions</summary><ul class="small mb-0 ps-3">@for(location of locations(item); track location.sourceName+':'+location.line+':'+location.column){<li>Line {{location.line}}, column {{location.column}}</li>}</ul></details>}</td><td><pre class="mb-0">{{item.evidence}}</pre></td><td>{{item.recommendation}}</td></tr>
+    }
+  </tbody></table></div>
+</section>
+}

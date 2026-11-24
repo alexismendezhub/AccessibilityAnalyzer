@@ -1,0 +1,24 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="global.json" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/AccessibilityAnalyzer.Application/AccessibilityAnalyzer.Application.csproj" />
+    <Project Path="src/AccessibilityAnalyzer.Domain/AccessibilityAnalyzer.Domain.csproj" />
+    <Project Path="src/AccessibilityAnalyzer.Infrastructure/AccessibilityAnalyzer.Infrastructure.csproj" />
+    <Project Path="src/AccessibilityAnalyzer.Server/AccessibilityAnalyzer.Server.csproj" />
+    <Project Path="src/accessibilityanalyzer.client/accessibilityanalyzer.client.esproj">
+      <Build />
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/src/tests/">
+    <Project Path="src/tests/AccessibilityAnalyzer.Application.UnitTests/AccessibilityAnalyzer.Application.UnitTests.csproj" />
+    <Project Path="src/tests/AccessibilityAnalyzer.Domain.UnitTests/AccessibilityAnalyzer.Domain.UnitTests.csproj" />
+    <Project Path="src/tests/AccessibilityAnalyzer.Infrastructure.IntegrationTests/AccessibilityAnalyzer.Infrastructure.IntegrationTests.csproj" />
+    <Project Path="src/tests/AccessibilityAnalyzer.Server.IntegrationTests/AccessibilityAnalyzer.Server.IntegrationTests.csproj" />
+  </Folder>
+</Solution>

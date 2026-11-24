@@ -1,0 +1,278 @@
+# ============================================================
+# Generic Project .gitignore
+# Reusable baseline for .NET + Angular/Node + Docker projects
+# Keep this file in the repository root as: .gitignore
+# ============================================================
+
+# ------------------------------------------------------------
+# Secrets / local environment configuration
+# ------------------------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.template
+!.env.*.template
+
+# Common local secret/config variants
+secrets.json
+*.secrets.json
+appsettings.Local.json
+appsettings.local.json
+appsettings.Development.local.json
+appsettings.Test.local.json
+appsettings.Production.local.json
+
+# Certificates / private keys
+*.pfx
+*.p12
+*.pem
+*.key
+*.cer.local
+*.crt.local
+
+# ------------------------------------------------------------
+# .NET / Visual Studio / MSBuild
+# ------------------------------------------------------------
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Aa]rtifacts/
+artifacts/
+
+.vs/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.VC.opendb
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# Visual Studio Code local settings
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+!.vscode/tasks.example.json
+!.vscode/launch.example.json
+
+# Keep Visual Studio JSPS browser debug configuration for the Angular client.
+!accessibilityanalyzer.client/.vscode/
+!accessibilityanalyzer.client/.vscode/launch.json
+!accessibilityanalyzer.client/.vscode/tasks.json
+!accessibilityanalyzer.client/.vscode/extensions.json
+
+
+# .NET test / coverage output
+TestResults/
+test-results/
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+*.trx
+*.testlog
+
+# Benchmark output
+BenchmarkDotNet.Artifacts/
+
+# NuGet local/generated output
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Generated EF / local database artifacts
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
+
+# ------------------------------------------------------------
+# Node / Angular / JavaScript / TypeScript
+# ------------------------------------------------------------
+node_modules/
+.pnpm-store/
+.yarn/
+.yarn-cache/
+.npm/
+
+# Angular build/cache output
+dist/
+.angular/
+.angular-cache/
+.cache/
+
+# Node logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Frontend test / browser artifacts
+playwright-report/
+test-results/
+blob-report/
+coverage/
+.nyc_output/
+cypress/videos/
+cypress/screenshots/
+
+# TypeScript incremental build
+*.tsbuildinfo
+
+# ------------------------------------------------------------
+# Docker / local runtime generated state
+# ------------------------------------------------------------
+.docker/
+docker-data/
+docker-volumes/
+volumes/
+local-data/
+runtime-data/
+
+# Local logs / PID files
+logs/
+log/
+*.log
+*.pid
+*.pid.lock
+
+# ------------------------------------------------------------
+# Generated packages / delivery artifacts
+# ------------------------------------------------------------
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+*.sha256
+*.sha256.txt
+
+# Generated installer / publish output
+publish/
+out/
+output/
+release-packages/
+packages-out/
+
+# ------------------------------------------------------------
+# Documentation QA / rendering artifacts
+# Keep source DOCX/MD files tracked; ignore only generated QA output.
+# ------------------------------------------------------------
+*-render/
+*-renders/
+*-sheets/
+*-contact-sheets/
+qa-render/
+qa-renders/
+docx-render/
+pdf-render/
+rendered-pages/
+
+# Temporary converted documents
+*.tmp.pdf
+*.preview.pdf
+*.render.pdf
+
+# ------------------------------------------------------------
+# Temporary / working files
+# ------------------------------------------------------------
+.tmp/
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+*.rej
+*.swp
+*.swo
+*~
+
+# ChatGPT / local working copies that should not become source
+chatgpt-work/
+chatgpt-temp/
+working-copy/
+worktree-temp/
+
+# ------------------------------------------------------------
+# OS metadata / junk
+# ------------------------------------------------------------
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ------------------------------------------------------------
+# Security scanning / tool caches
+# ------------------------------------------------------------
+.sonar/
+.sonarqube/
+.scannerwork/
+.security-cache/
+
+# ------------------------------------------------------------
+# Keep important project files tracked
+# ------------------------------------------------------------
+!README.md
+!.gitignore
+!global.json
+!Directory.Build.props
+!Directory.Build.targets
+
+# Keep canonical test/lifecycle scripts tracked
+!*.ps1
+!*.cmd
+
+# Keep source documentation tracked
+!docs/
+!docs/**/*.md
+!docs/**/*.docx
+
+# ------------------------------------------------------------
+# Project-specific exceptions belong below this line.
+# Add the narrowest possible rule instead of weakening the
+# generic protections above.
+# ------------------------------------------------------------
+
+accessibilityanalyzer.client/node_modules/
+accessibilityanalyzer.client/dist/
+accessibilityanalyzer.client/.angular/
+
+# Client lock is local-only by project decision; npm install may generate it.
+accessibilityanalyzer.client/package-lock.json
+
+
+# Local copy of the ASP.NET Core development certificate used by ng serve
+.aspnetcore-https/
